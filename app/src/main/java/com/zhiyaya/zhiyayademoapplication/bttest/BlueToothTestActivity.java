@@ -17,7 +17,7 @@ import java.util.List;
 public class BlueToothTestActivity extends AppCompatActivity {
     private final static String TAG = BlueToothTestActivity.class.getSimpleName();
     private Button btn_search;
-    private Button btn_send;
+    private Button btn_clear;
 
     private TextView tv_text;
     private TextView tv_content;
@@ -38,7 +38,7 @@ public class BlueToothTestActivity extends AppCompatActivity {
 
     private void initView() {
         btn_search = findViewById(R.id.btn_search);
-        btn_send = findViewById(R.id.btn_send);
+        btn_clear = findViewById(R.id.btn_clear);
         tv_text = findViewById(R.id.tv_text);
         tv_content = findViewById(R.id.tv_content);
 
@@ -49,7 +49,7 @@ public class BlueToothTestActivity extends AppCompatActivity {
             }
         });
 
-        btn_send.setOnClickListener(new View.OnClickListener() {
+        btn_clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 testBeans.clear();

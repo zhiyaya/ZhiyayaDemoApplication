@@ -19,6 +19,14 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".bttest.BlueToothTestActivity">
+
+        </activity>
+        <service
+                android:name=".bttest.TestService"
+                android:enabled="true"
+                android:exported="true">
+        </service>
     </application>
 
 </manifest>
