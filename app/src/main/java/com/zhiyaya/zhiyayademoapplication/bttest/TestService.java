@@ -159,15 +159,16 @@ public class TestService extends Service {
         mBluetoothAdapter = mBluetoothManager.getAdapter();
 
         //如果蓝牙没有打开 打开蓝牙
-        if (!mBluetoothAdapter.isEnabled()) {
+        if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled()) {
             mBluetoothAdapter.enable();
         }
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
-        BluetoothDevice bluetoothDeviceOne = mBluetoothAdapter.getRemoteDevice("FF:FF:FF:FF:FF:FF");
+        String address = intent.getStringExtra("address");
+        Log.d(TAG, "address: " + address);
+        BluetoothDevice bluetoothDeviceOne = mBluetoothAdapter.getRemoteDevice(address);
         mBluetoothGatt = bluetoothDeviceOne.connectGatt(TestService.this, true, bluetoothGattCallbackOne);
         timer.schedule(task, 2000, 2000);
         return super.onStartCommand(intent, flags, startId);
