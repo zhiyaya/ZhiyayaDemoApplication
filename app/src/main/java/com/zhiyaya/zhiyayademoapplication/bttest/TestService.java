@@ -76,6 +76,20 @@ public class TestService extends Service {
         }
     }
 
+    private TestBean verifyData(byte[] bytes) {
+        if (bytes[0] != 0x05 || bytes[1] != 0x0e || bytes[2] != 0x02) {
+            return null;
+        }
+        TestBean testBean = new TestBean();
+        testBean.setLight((bytes[4] & 0xFF) << 8 | (bytes[3] & 0xFF));
+        testBean.setT((float) (((bytes[6] & 0xFF) << 8 | (bytes[5] & 0xFF)) / 100.0));
+        testBean.setHumi((bytes[8] & 0xFF) << 8 | (bytes[7] & 0xFF));
+        testBean.setF((bytes[10] & 0xFF) << 8 | (bytes[9] & 0xFF));
+        testBean.setAir((bytes[12] & 0xFF) << 8 | (bytes[11] & 0xFF));
+        testBean.setTouch((bytes[14] & 0xFF) << 8 | (bytes[13] & 0xFF));
+        return testBean;
+    }
+
     private BluetoothGattCallback bluetoothGattCallbackOne = new BluetoothGattCallback() {
         @Override
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
@@ -121,21 +135,38 @@ public class TestService extends Service {
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {//数据改变
             super.onCharacteristicChanged(gatt, characteristic);
-            String data = new String(characteristic.getValue());
-            if (data.equals("OK")) {
-                stringBuilder = new StringBuilder();
-            } else if (data.contains("ERR")) {
+            byte[] bytes = characteristic.getValue();
+            String data = new String(bytes);
+            if (data.contains("ERR")) {
                 Log.e(TAG, "onCharacteristicChangedError: " + data);
             } else {
-                stringBuilder.append(data);
-                refreshData();
+                Log.i(TAG, "data: " + bytesToHexString(bytes));
+                TestBean testBean = verifyData(bytes);
+                if (onDataCallBack != null && testBean != null) {
+                    onDataCallBack.onDataReceive(testBean);
+                }
             }
+        }
+
+        public String bytesToHexString(byte[] bArr) {
+            StringBuffer sb = new StringBuffer(bArr.length);
+            String sTmp;
+
+            for (int i = 0; i < bArr.length; i++) {
+                sb.append(i).append(":");
+                sTmp = Integer.toHexString(0xFF & bArr[i]);
+                if (sTmp.length() < 2)
+                    sb.append(0);
+                sb.append(sTmp.toUpperCase()).append(" ");
+            }
+
+            return sb.toString();
         }
 
         @Override
         public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
-                Log.e(TAG, "发送成功");
+                Log.d(TAG, "发送成功");
             }
             super.onCharacteristicWrite(gatt, characteristic, status);
         }
@@ -170,7 +201,7 @@ public class TestService extends Service {
         Log.d(TAG, "address: " + address);
         BluetoothDevice bluetoothDeviceOne = mBluetoothAdapter.getRemoteDevice(address);
         mBluetoothGatt = bluetoothDeviceOne.connectGatt(TestService.this, true, bluetoothGattCallbackOne);
-        timer.schedule(task, 2000, 2000);
+        timer.schedule(task, 2000, 500);
         return super.onStartCommand(intent, flags, startId);
     }
 
