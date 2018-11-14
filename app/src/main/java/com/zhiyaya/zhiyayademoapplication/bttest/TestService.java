@@ -36,7 +36,7 @@ public class TestService extends Service {
     private TimerTask task = new TimerTask() {
         @Override
         public void run() {
-            Log.i(TAG, "TimerTask: " + isListenOn);
+            Log.v(TAG, "TimerTask: " + isListenOn);
             if (isListenOn) {
                 byte[] bytes = new byte[]{0x05, 0x02, 0x00, 0x00};
                 write(bytes);
@@ -140,7 +140,7 @@ public class TestService extends Service {
             if (data.contains("ERR")) {
                 Log.e(TAG, "onCharacteristicChangedError: " + data);
             } else {
-                Log.i(TAG, "data: " + bytesToHexString(bytes));
+                Log.v(TAG, "data: " + bytesToHexString(bytes));
                 TestBean testBean = verifyData(bytes);
                 if (onDataCallBack != null && testBean != null) {
                     onDataCallBack.onDataReceive(testBean);

@@ -11,5 +11,9 @@
             android:layout_height="wrap_content"
             android:text="蓝牙测试"
             android:id="@+id/btn_test"/>
-
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="动画"
+            android:id="@+id/btn_anim_test"/>
 </LinearLayout>

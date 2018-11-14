@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Rect;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.ParcelUuid;
@@ -18,6 +19,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.zhiyaya.zhiyayademoapplication.R;
 import com.zhiyaya.zhiyayademoapplication.bttest.adapter.BluetoothDeviceListAdapter;
@@ -44,6 +46,10 @@ public class BlueToothTestActivity extends AppCompatActivity {
 
     private BluetoothAdapter mBluetoothAdapter;
     private List<BluetoothDevice> bluetoothDevices = new ArrayList<>();
+
+    private ImageView iv_anim;
+    private int continuouslyTouch = 0;
+    private int lastType = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +96,8 @@ public class BlueToothTestActivity extends AppCompatActivity {
         btn_clear = findViewById(R.id.btn_clear);
         tv_text = findViewById(R.id.tv_text);
         tv_content = findViewById(R.id.tv_content);
+
+        iv_anim = findViewById(R.id.iv_anim);
 
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,6 +181,65 @@ public class BlueToothTestActivity extends AppCompatActivity {
         }
     }
 
+    private void setAnim(final int type) {
+        if (type == lastType) {
+            return;
+        }
+        lastType = type;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                iv_anim.setVisibility(View.VISIBLE);
+                AnimationDrawable animationDrawable;
+                switch (type) {
+                    case 1:
+                        iv_anim.setImageResource(R.drawable.blink_anim);
+                        animationDrawable = (AnimationDrawable) iv_anim.getDrawable();
+                        break;
+                    case 2:
+                        iv_anim.setImageResource(R.drawable.excite_anim);
+                        animationDrawable = (AnimationDrawable) iv_anim.getDrawable();
+                        break;
+                    default:
+                        iv_anim.setImageResource(R.drawable.sleep_anim);
+                        animationDrawable = (AnimationDrawable) iv_anim.getDrawable();
+                        break;
+                }
+                animationDrawable.start();
+            }
+        });
+    }
+
+    private void refresh(TestBean testBean) {
+        testBeans.add(testBean);
+        while (testBeans.size() > 100) {
+            testBeans.remove(0);
+        }
+        setDataText(testBean.toString() + " " + testBeans.size());
+        if (testBeans.size() > 1) {
+            TestBean old = testBeans.get(testBeans.size() - 2);
+            if (old.getTouch() < testBean.getTouch()) {
+                if (continuouslyTouch <= 6) {
+                    continuouslyTouch += 2;
+                }
+                if (continuouslyTouch > 5) {
+                    setAnim(2);
+                } else {
+                    setAnim(1);
+                }
+            } else {
+                if (continuouslyTouch > 0) {
+                    continuouslyTouch--;
+                }
+                if (continuouslyTouch == 0) {
+                    setAnim(0);
+                }
+
+            }
+        }
+        Log.i(TAG, "refresh: continuouslyTouch" + continuouslyTouch);
+    }
+
     private ScanCallback scanCallback = new ScanCallback() {
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
@@ -207,14 +274,14 @@ public class BlueToothTestActivity extends AppCompatActivity {
             testService.setOnDataCallBack(new OnDataCallBack() {
                 @Override
                 public void onDataReceive(TestBean testBean) {
-                    testBeans.add(testBean);
-                    setDataText(testBean.toString() + " " + testBeans.size());
+                    refresh(testBean);
                 }
 
                 @Override
                 public void onConnectionStateChange(boolean isConnect) {
                     if (isConnect) {
                         setText("连接成功");
+                        setAnim(0);
                     } else {
                         setText("连接失败");
                     }

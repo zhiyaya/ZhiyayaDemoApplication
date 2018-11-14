@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import com.zhiyaya.zhiyayademoapplication.animtest.AnimTestActivity;
 import com.zhiyaya.zhiyayademoapplication.bttest.BlueToothTestActivity;
 
 public class MainActivity extends AppCompatActivity {
 
     private Button btn_test;
+    private Button btn_anim_test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +22,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getBaseContext(), BlueToothTestActivity.class));
+            }
+        });
+        btn_anim_test = findViewById(R.id.btn_anim_test);
+        btn_anim_test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getBaseContext(), AnimTestActivity.class));
             }
         });
     }
