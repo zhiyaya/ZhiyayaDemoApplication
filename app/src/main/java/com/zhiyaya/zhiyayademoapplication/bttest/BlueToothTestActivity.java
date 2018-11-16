@@ -4,14 +4,10 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.*;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.graphics.Rect;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.os.ParcelUuid;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,6 +18,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.zhiyaya.zhiyayademoapplication.R;
+import com.zhiyaya.zhiyayademoapplication.animtest.AnimTestActivity;
 import com.zhiyaya.zhiyayademoapplication.bttest.adapter.BluetoothDeviceListAdapter;
 
 import java.util.ArrayList;
@@ -61,14 +58,6 @@ public class BlueToothTestActivity extends AppCompatActivity {
         mBluetoothAdapter = bluetoothManager.getAdapter();
 
         bluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();
-    }
-
-    private void startService(BluetoothDevice device) {
-        //连接服务
-        Intent intent = new Intent(this, TestService.class);
-        intent.putExtra("address", device.getAddress());
-        startService(intent);
-        bindService(intent, conn, BIND_AUTO_CREATE);
     }
 
     public void stopScan() {
@@ -142,7 +131,9 @@ public class BlueToothTestActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, BluetoothDevice item) {
                 stopScan();
-                startService(item);
+                Intent intent = new Intent(BlueToothTestActivity.this, AnimTestActivity.class);
+                intent.putExtra("address", item.getAddress());
+                startActivity(intent);
                 btn_search.setText("已连接");
                 btn_search.setEnabled(false);
             }
@@ -181,64 +172,6 @@ public class BlueToothTestActivity extends AppCompatActivity {
         }
     }
 
-    private void setAnim(final int type) {
-        if (type == lastType) {
-            return;
-        }
-        lastType = type;
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                iv_anim.setVisibility(View.VISIBLE);
-                AnimationDrawable animationDrawable;
-                switch (type) {
-                    case 1:
-                        iv_anim.setImageResource(R.drawable.blink_anim);
-                        animationDrawable = (AnimationDrawable) iv_anim.getDrawable();
-                        break;
-                    case 2:
-                        iv_anim.setImageResource(R.drawable.excite_anim);
-                        animationDrawable = (AnimationDrawable) iv_anim.getDrawable();
-                        break;
-                    default:
-                        iv_anim.setImageResource(R.drawable.sleep_anim);
-                        animationDrawable = (AnimationDrawable) iv_anim.getDrawable();
-                        break;
-                }
-                animationDrawable.start();
-            }
-        });
-    }
-
-    private void refresh(TestBean testBean) {
-        testBeans.add(testBean);
-        while (testBeans.size() > 100) {
-            testBeans.remove(0);
-        }
-        setDataText(testBean.toString() + " " + testBeans.size());
-        if (testBeans.size() > 1) {
-            TestBean old = testBeans.get(testBeans.size() - 2);
-            if (old.getTouch() < testBean.getTouch()) {
-                if (continuouslyTouch <= 6) {
-                    continuouslyTouch += 2;
-                }
-                if (continuouslyTouch > 5) {
-                    setAnim(2);
-                } else {
-                    setAnim(1);
-                }
-            } else {
-                if (continuouslyTouch > 0) {
-                    continuouslyTouch--;
-                }
-                if (continuouslyTouch == 0) {
-                    setAnim(0);
-                }
-
-            }
-        }
-        Log.i(TAG, "refresh: continuouslyTouch" + continuouslyTouch);
-    }
 
     private ScanCallback scanCallback = new ScanCallback() {
         @Override
@@ -260,40 +193,8 @@ public class BlueToothTestActivity extends AppCompatActivity {
         }
     };
 
-    ServiceConnection conn = new ServiceConnection() {
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-
-        }
-
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            //返回一个MsgService对象
-            testService = ((TestService.MsgBinder) service).getService();
-            //注册回调接口来接收下载进度的变化
-            testService.setOnDataCallBack(new OnDataCallBack() {
-                @Override
-                public void onDataReceive(TestBean testBean) {
-                    refresh(testBean);
-                }
-
-                @Override
-                public void onConnectionStateChange(boolean isConnect) {
-                    if (isConnect) {
-                        setText("连接成功");
-                        setAnim(0);
-                    } else {
-                        setText("连接失败");
-                    }
-                }
-            });
-
-        }
-    };
-
     @Override
     protected void onDestroy() {
-        unbindService(conn);
         super.onDestroy();
     }
 }

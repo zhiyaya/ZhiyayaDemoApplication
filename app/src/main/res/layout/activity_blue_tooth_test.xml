@@ -5,6 +5,7 @@
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_height="match_parent"
+        android:background="@drawable/background"
         tools:context=".bttest.BlueToothTestActivity">
     <Button
             android:id="@+id/btn_search"

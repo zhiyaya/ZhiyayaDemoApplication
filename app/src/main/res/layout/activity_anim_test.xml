@@ -1,28 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:background="@drawable/background"
         tools:context=".animtest.AnimTestActivity">
+    <LinearLayout
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="50dp"
+            android:padding="20dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <LinearLayout
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+            <ImageView
+                    android:layout_gravity="center"
+                    android:src="@drawable/label_light"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:textAlignment="center"
+                      android:layout_gravity="center"
+                      android:text="光照"
+                      style="@style/TextPrimary"
+                      android:id="@+id/tv_light"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="match_parent"
+                      android:text="光照"
+                      style="@style/TextLabel"
+                      android:layout_gravity="center"
+                      android:textAlignment="center"/>
+        </LinearLayout>
+        <LinearLayout
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+            <ImageView
+                    android:layout_gravity="center"
+                    android:src="@drawable/label_temp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:textAlignment="center"
+                      android:layout_gravity="center"
+                      android:text="温度"
+                      style="@style/TextPrimary"
+                      android:id="@+id/tv_temp"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="match_parent"
+                      android:text="温度"
+                      style="@style/TextLabel"
+                      android:layout_gravity="center"
+                      android:textAlignment="center"/>
+        </LinearLayout>
+        <LinearLayout
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+            <ImageView
+                    android:layout_gravity="center"
+                    android:src="@drawable/label_water"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:textAlignment="center"
+                      android:layout_gravity="center"
+                      android:text="水分"
+                      style="@style/TextPrimary"
+                      android:id="@+id/tv_water"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="match_parent"
+                      android:text="水分"
+                      style="@style/TextLabel"
+                      android:layout_gravity="center"
+                      android:textAlignment="center"/>
+        </LinearLayout>
+        <LinearLayout
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+            <ImageView
+                    android:layout_gravity="center"
+                    android:src="@drawable/label_air"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:textAlignment="center"
+                      android:layout_gravity="center"
+                      android:text="空气"
+                      style="@style/TextPrimary"
+                      android:id="@+id/tv_air"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="match_parent"
+                      android:text="空气"
+                      style="@style/TextLabel"
+                      android:layout_gravity="center"
+                      android:textAlignment="center"/>
+        </LinearLayout>
+    </LinearLayout>
     <ImageView
-            android:id="@+id/iv_anim"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    <Button
-            android:text="blink"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btn_blink"/>
-    <Button
-            android:text="excite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btn_excite"/>
-    <Button
-            android:text="reset"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btn_reset"/>
-</LinearLayout>
+            android:src="@drawable/blink0"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="50dp"
+            android:id="@+id/iv_anim"/>
+</RelativeLayout>
