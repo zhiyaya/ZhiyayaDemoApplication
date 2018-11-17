@@ -5,6 +5,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/background"
+        android:id="@+id/rl_back"
         tools:context=".animtest.AnimTestActivity">
     <LinearLayout
             android:layout_centerHorizontal="true"
@@ -23,7 +24,8 @@
                     android:layout_gravity="center"
                     android:src="@drawable/label_light"
                     android:layout_width="50dp"
-                    android:layout_height="50dp"/>
+                    android:layout_height="50dp"
+                    android:id="@+id/iv_label_light"/>
             <TextView android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:textAlignment="center"
@@ -36,7 +38,8 @@
                       android:text="光照"
                       style="@style/TextLabel"
                       android:layout_gravity="center"
-                      android:textAlignment="center"/>
+                      android:textAlignment="center"
+                      android:id="@+id/tv_label_light"/>
         </LinearLayout>
         <LinearLayout
                 android:layout_weight="1"
@@ -47,7 +50,8 @@
                     android:layout_gravity="center"
                     android:src="@drawable/label_temp"
                     android:layout_width="50dp"
-                    android:layout_height="50dp"/>
+                    android:layout_height="50dp"
+                    android:id="@+id/iv_label_temp"/>
             <TextView android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:textAlignment="center"
@@ -60,7 +64,8 @@
                       android:text="温度"
                       style="@style/TextLabel"
                       android:layout_gravity="center"
-                      android:textAlignment="center"/>
+                      android:textAlignment="center"
+                      android:id="@+id/tv_label_temp"/>
         </LinearLayout>
         <LinearLayout
                 android:layout_weight="1"
@@ -71,7 +76,8 @@
                     android:layout_gravity="center"
                     android:src="@drawable/label_water"
                     android:layout_width="50dp"
-                    android:layout_height="50dp"/>
+                    android:layout_height="50dp"
+                    android:id="@+id/iv_label_water"/>
             <TextView android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:textAlignment="center"
@@ -84,7 +90,8 @@
                       android:text="水分"
                       style="@style/TextLabel"
                       android:layout_gravity="center"
-                      android:textAlignment="center"/>
+                      android:textAlignment="center"
+                      android:id="@+id/tv_label_water"/>
         </LinearLayout>
         <LinearLayout
                 android:layout_weight="1"
@@ -95,7 +102,8 @@
                     android:layout_gravity="center"
                     android:src="@drawable/label_air"
                     android:layout_width="50dp"
-                    android:layout_height="50dp"/>
+                    android:layout_height="50dp"
+                    android:id="@+id/iv_label_air"/>
             <TextView android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:textAlignment="center"
@@ -108,9 +116,27 @@
                       android:text="空气"
                       style="@style/TextLabel"
                       android:layout_gravity="center"
-                      android:textAlignment="center"/>
+                      android:textAlignment="center"
+                      android:id="@+id/tv_label_air"/>
         </LinearLayout>
     </LinearLayout>
+    <TextView
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/dialog_corners"
+            android:id="@+id/tv_dialog"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:maxLines="3"
+            android:textColor="@color/text_primary"
+            android:text="今日雾霾，不宜开窗，不宜开窗，不宜开窗，重要的事情说三遍！"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="290dp"
+    />
     <ImageView
             android:src="@drawable/blink0"
             android:layout_width="250dp"

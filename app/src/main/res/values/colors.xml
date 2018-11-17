@@ -9,4 +9,6 @@
     <color name="back">#d9d9d9</color>
     <color name="common_white">#ffffff</color>
     <color name="text_primary">#693210</color>
+    <color name="text_background">#f1d8a7</color>
+    <color name="text_background_night">#a7b9f3</color>
 </resources>
