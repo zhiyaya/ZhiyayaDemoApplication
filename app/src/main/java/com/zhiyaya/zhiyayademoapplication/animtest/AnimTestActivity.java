@@ -157,8 +157,13 @@ public class AnimTestActivity extends AppCompatActivity {
             //注册回调接口来接收下载进度的变化
             testService.setOnDataCallBack(new OnDataCallBack() {
                 @Override
-                public void onDataReceive(TestBean testBean) {
-                    refresh(testBean);
+                public void onDataReceive(final TestBean testBean) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            refresh(testBean);
+                        }
+                    });
                 }
 
                 @Override
@@ -195,7 +200,7 @@ public class AnimTestActivity extends AppCompatActivity {
         }
     }
 
-    private void refresh(TestBean testBean) {
+    private void refresh(final TestBean testBean) {
         testBeans.add(testBean);
         while (testBeans.size() > 100) {
             testBeans.remove(0);
@@ -232,7 +237,7 @@ public class AnimTestActivity extends AppCompatActivity {
 
             }
         }
-        Log.i(TAG, "refresh: continuouslyTouch" + continuouslyTouch);
+        Log.d(TAG, "refresh: continuouslyTouch" + continuouslyTouch);
     }
 
     private void setStatus(final int type) {
